@@ -37,7 +37,7 @@ namespace DataAccess
 
             var items = new Item[]
             {
-                new Item { Id = new Guid("45bc5498-8738-435e-a99b-66f2120b9cef"), OrderId = orderID, Name = "itemName1", UpdatedDate = DateTime.Today }
+                new Item { Id = new Guid("45bc5498-8738-435e-a99b-66f2120b9cef"), OrderId = orderID, Name = "itemName1", UpdatedDate = DateTime.Today, Price = 3.99m }
                 //new Item{Id = new Guid("45bc5498-8738-435e-a99b-66f2120b9cef"), OrderId = orderID, Name = "itemName1", UpdatedDate = DateTime.Today,  CreatedDate = DateTime.Today}
             };
 

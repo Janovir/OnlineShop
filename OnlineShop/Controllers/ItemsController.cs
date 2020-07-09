@@ -10,11 +10,11 @@ using Entities;
 
 namespace OnlineShop.Controllers
 {
-    public class ItemController : Controller
+    public class ItemsController : Controller
     {
         private readonly ShopContext _context;
 
-        public ItemController(ShopContext context)
+        public ItemsController(ShopContext context)
         {
             _context = context;
         }
