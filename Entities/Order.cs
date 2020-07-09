@@ -7,6 +7,6 @@ namespace Entities
 {
     public class Order : BaseEntity
     {
-        public IEnumerable<Order> Orders { get; set; }
+        public IEnumerable<Item> Items { get; set; }
     }
 }
