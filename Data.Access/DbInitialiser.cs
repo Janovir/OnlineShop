@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DataAccess
+namespace Data.Access
 {
     public static class DbInitialiser
     {
@@ -21,9 +21,8 @@ namespace DataAccess
             var orderID = new Guid("f6614f3c-579e-4ada-b85e-ba62475994a0");
 
             var orders = new Order[]
-            {
-                new Order { Id = orderID, Name = "Order1", UpdatedDate = DateTime.Today }
-                //new Order{Id = orderID, Name = "Order1", UpdatedDate = DateTime.Today, CreatedDate = DateTime.Today}
+            {                
+                new Order{Id = orderID, Name = "Order1", UpdatedDate = DateTime.Today, CreatedDate = DateTime.Today}
             };
 
             foreach (Order o in orders)
@@ -37,8 +36,7 @@ namespace DataAccess
 
             var items = new Item[]
             {
-                new Item { Id = new Guid("45bc5498-8738-435e-a99b-66f2120b9cef"), OrderId = orderID, Name = "itemName1", UpdatedDate = DateTime.Today, Price = 3.99m }
-                //new Item{Id = new Guid("45bc5498-8738-435e-a99b-66f2120b9cef"), OrderId = orderID, Name = "itemName1", UpdatedDate = DateTime.Today,  CreatedDate = DateTime.Today}
+                new Item { Id = new Guid("45bc5498-8738-435e-a99b-66f2120b9cef"), OrderId = orderID, Name = "itemName1", Price = 3.99m, UpdatedDate = DateTime.Today, CreatedDate = DateTime.Today }
             };
 
             foreach (Item i in items)

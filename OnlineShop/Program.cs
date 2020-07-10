@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataAccess;
+using Data.Access;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +15,6 @@ namespace OnlineShop
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
 
             var host = CreateHostBuilder(args).Build();
 
@@ -34,6 +33,8 @@ namespace OnlineShop
                     logger.LogError(ex, "An error occurred while seeding the database.");
                 }
             }
+
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

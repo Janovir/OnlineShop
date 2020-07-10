@@ -5,18 +5,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DataAccess;
+using Data.Access;
 using Entities;
+using Data.Repositories.Abstraction;
 
 namespace OnlineShop.Controllers
 {
     public class ItemsController : Controller
     {
         private readonly ShopContext _context;
+        private readonly IItemRepository _itemRepository;
 
-        public ItemsController(ShopContext context)
+        public ItemsController(ShopContext context, IItemRepository itemRepository)
         {
             _context = context;
+            _itemRepository = itemRepository;
         }
 
         // GET: Item
