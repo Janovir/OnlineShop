@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Services
+namespace Services.Abstraction
 {
     public class Class1
     {

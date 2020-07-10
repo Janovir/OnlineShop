@@ -8,6 +8,7 @@ namespace Entities
     public class Item : BaseEntity
     {
         public Guid OrderId { get; set; }
+        public Order Order { get; set; }
         public decimal Price { get; set; }
     }
 }
