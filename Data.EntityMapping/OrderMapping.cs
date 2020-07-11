@@ -1,5 +1,7 @@
 ﻿using System;
 using Entities;
+using Entities.Abstraction.Enums;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
@@ -11,7 +13,7 @@ namespace Data.EntityMapping
         {
             BaseMap(e);
 
-            e.Property(t => t.OrderStatus).IsRequired();
+            e.Property(t => t.OrderStatus).IsRequired().HasDefaultValue(OrderStatus.Placed);
         }
     }
 }

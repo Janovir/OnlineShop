@@ -8,24 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using Data.Access;
 using Entities;
 using Data.Repositories.Abstraction;
+using Services;
+using Services.Abstraction;
 
 namespace OnlineShop.Controllers
 {
     public class ItemsController : Controller
     {
-        private readonly ShopContext _context;
-        private readonly IItemRepository _itemRepository;
+        private readonly IItemService _itemService;
 
-        public ItemsController(ShopContext context, IItemRepository itemRepository)
+        public ItemsController(IItemService itemService)
         {
-            _context = context;
-            _itemRepository = itemRepository;
+            _itemService = itemService;
         }
 
         // GET: Item
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Items.ToListAsync());
+            return View(await _itemService.GetAllAsync());
         }
 
         // GET: Item/Details/5
@@ -36,8 +36,8 @@ namespace OnlineShop.Controllers
                 return NotFound();
             }
 
-            var item = await _context.Items
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var item = (await _itemService.GetAllAsync())
+                .FirstOrDefault(m => m.Id == id);
             if (item == null)
             {
                 return NotFound();
@@ -61,11 +61,17 @@ namespace OnlineShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                //item.Id = Guid.NewGuid();
+                //_itemService.Add(item);
+                //await _context.SaveChangesAsync();
+                //return RedirectToAction(nameof(Index));
+
+
                 item.Id = Guid.NewGuid();
-                _context.Add(item);
-                await _context.SaveChangesAsync();
+                await _itemService.CreateAsync(item);
                 return RedirectToAction(nameof(Index));
             }
+
             return View(item);
         }
 
@@ -77,11 +83,12 @@ namespace OnlineShop.Controllers
                 return NotFound();
             }
 
-            var item = await _context.Items.FindAsync(id);
+            var item = await _itemService.GetAsync((Guid)id);
             if (item == null)
             {
                 return NotFound();
             }
+
             return View(item);
         }
 
@@ -101,12 +108,11 @@ namespace OnlineShop.Controllers
             {
                 try
                 {
-                    _context.Update(item);
-                    await _context.SaveChangesAsync();
+                    await _itemService.UpdateAsync(item);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ItemExists(item.Id))
+                    if (! await ItemExists(item.Id))
                     {
                         return NotFound();
                     }
@@ -128,8 +134,8 @@ namespace OnlineShop.Controllers
                 return NotFound();
             }
 
-            var item = await _context.Items
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var item = await _itemService.RemoveAsync((Guid)id);
+
             if (item == null)
             {
                 return NotFound();
@@ -138,7 +144,8 @@ namespace OnlineShop.Controllers
             return View(item);
         }
 
-        // POST: Item/Delete/5
+        /*
+         * // POST: Item/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -148,10 +155,11 @@ namespace OnlineShop.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        */
 
-        private bool ItemExists(Guid id)
+        private async Task<bool> ItemExists(Guid id)
         {
-            return _context.Items.Any(e => e.Id == id);
+            return (await _itemService.GetAsync(id)) != null;
         }
     }
 }

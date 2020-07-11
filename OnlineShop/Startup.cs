@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Services;
+using Services.Abstraction;
 
 namespace OnlineShop
 {
@@ -32,6 +34,8 @@ namespace OnlineShop
             services.AddDbContext<ShopContext>(opt => opt.UseInMemoryDatabase("OnlineShopInMemory"));
             services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<IOrderService, OrderService>();
             services.AddMvc();
         }
 

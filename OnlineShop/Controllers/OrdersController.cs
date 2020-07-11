@@ -7,25 +7,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Data.Access;
 using Entities;
+using Data.Repositories.Abstraction;
+using Services;
+using Services.Abstraction;
 
 namespace OnlineShop.Controllers
 {
     public class OrdersController : Controller
     {
-        private readonly ShopContext _context;
+        private readonly IOrderService _orderService;
 
-        public OrdersController(ShopContext context)
+        public OrdersController(IOrderService orderService)
         {
-            _context = context;
+            _orderService = orderService;
         }
 
-        // GET: Orders
+        // GET: Order
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Orders.ToListAsync());
+            return View(await _orderService.GetAllAsync());
         }
 
-        // GET: Orders/Details/5
+        // GET: Order/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -33,8 +36,8 @@ namespace OnlineShop.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var order = (await _orderService.GetAllAsync())
+                .FirstOrDefault(m => m.Id == id);
             if (order == null)
             {
                 return NotFound();
@@ -43,30 +46,36 @@ namespace OnlineShop.Controllers
             return View(order);
         }
 
-        // GET: Orders/Create
+        // GET: Order/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Orders/Create
+        // POST: Order/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,UpdatedDate")] Order order)
+        public async Task<IActionResult> Create([Bind("OrderId,Id,Name,UpdatedDate")] Order order)
         {
             if (ModelState.IsValid)
             {
+                //order.Id = Guid.NewGuid();
+                //_orderService.Add(order);
+                //await _context.SaveChangesAsync();
+                //return RedirectToAction(nameof(Index));
+
+
                 order.Id = Guid.NewGuid();
-                _context.Add(order);
-                await _context.SaveChangesAsync();
+                await _orderService.CreateAsync(order);
                 return RedirectToAction(nameof(Index));
             }
+
             return View(order);
         }
 
-        // GET: Orders/Edit/5
+        // GET: Order/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -74,20 +83,21 @@ namespace OnlineShop.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _orderService.GetAsync((Guid)id);
             if (order == null)
             {
                 return NotFound();
             }
+
             return View(order);
         }
 
-        // POST: Orders/Edit/5
+        // POST: Order/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,UpdatedDate")] Order order)
+        public async Task<IActionResult> Edit(Guid id, [Bind("OrderId,Id,Name,UpdatedDate")] Order order)
         {
             if (id != order.Id)
             {
@@ -98,12 +108,11 @@ namespace OnlineShop.Controllers
             {
                 try
                 {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
+                    await _orderService.UpdateAsync(order);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderExists(order.Id))
+                    if (!await OrderExists(order.Id))
                     {
                         return NotFound();
                     }
@@ -117,7 +126,7 @@ namespace OnlineShop.Controllers
             return View(order);
         }
 
-        // GET: Orders/Delete/5
+        // GET: Order/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -125,8 +134,8 @@ namespace OnlineShop.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var order = await _orderService.RemoveAsync((Guid)id);
+
             if (order == null)
             {
                 return NotFound();
@@ -135,7 +144,8 @@ namespace OnlineShop.Controllers
             return View(order);
         }
 
-        // POST: Orders/Delete/5
+        /*
+         * // POST: Order/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -145,10 +155,11 @@ namespace OnlineShop.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        */
 
-        private bool OrderExists(Guid id)
+        private async Task<bool> OrderExists(Guid id)
         {
-            return _context.Orders.Any(e => e.Id == id);
+            return (await _orderService.GetAsync(id)) != null;
         }
     }
 }

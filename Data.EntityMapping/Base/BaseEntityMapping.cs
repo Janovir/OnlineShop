@@ -11,6 +11,7 @@ namespace Data.EntityMapping
         public static void BaseMap(EntityTypeBuilder<TEntity> e)
         {
             e.HasKey(t => t.Id);
+            e.HasIndex(t => t.Name).IsUnique();//TODO: Check
             e.Property(t => t.Name).HasMaxLength(50);
         }
     }
