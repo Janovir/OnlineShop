@@ -57,7 +57,7 @@ namespace OnlineShop.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderId,Id,Name,UpdatedDate")] Item item)
+        public async Task<IActionResult> Create([Bind("OrderId,Id,Name,Price")] Item item)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace OnlineShop.Controllers
                 //return RedirectToAction(nameof(Index));
 
 
-                item.Id = Guid.NewGuid();
+                //item.Id = Guid.NewGuid();
                 await _itemService.CreateAsync(item);
                 return RedirectToAction(nameof(Index));
             }
@@ -144,18 +144,16 @@ namespace OnlineShop.Controllers
             return View(item);
         }
 
-        /*
-         * // POST: Item/Delete/5
+        
+        // POST: Item/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var item = await _context.Items.FindAsync(id);
-            _context.Items.Remove(item);
-            await _context.SaveChangesAsync();
+            var item = await _itemService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
-        */
+        
 
         private async Task<bool> ItemExists(Guid id)
         {

@@ -14,16 +14,21 @@ namespace Services
     public class OrderService : CrudService<Order>, IOrderService
     {
         private IOrderRepository _orderRepository;
-        public OrderService(IOrderRepository orderRepository) : base(orderRepository)
+        private IItemService _itemService;
+
+        public OrderService(IOrderRepository orderRepository, IItemService itemService) : base(orderRepository)
         {
             _orderRepository = orderRepository;
+            _itemService = itemService;
         }
 
         //private readonly IOrderService _orderService;
-        public async Task<Order> GetOrderWithItems(Guid id)
+        public async Task<Order> GetWithItemsAsync(Guid id)
         {
             var order = await base.GetAsync(id);
-            return order;//TODO: Missing order references
+            order.Items = (await _itemService.GetAllAsync()).Where(i => i.OrderId == id);
+
+            return order;
         }
     }
 }

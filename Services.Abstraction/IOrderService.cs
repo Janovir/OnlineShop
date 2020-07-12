@@ -9,6 +9,6 @@ namespace Services.Abstraction
 {
     public interface IOrderService : ICrudService<Order>
     {
-        Task<Order> GetOrderWithItems(Guid id);
+        Task<Order> GetWithItemsAsync(Guid id);
     }
 }

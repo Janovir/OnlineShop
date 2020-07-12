@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
 {
-    public class ItemRepository : CrudRepository<Item>, IItemRepository
+    public class ItemRepository : DbCrudRepository<Item>, IItemRepository
     {
         public ItemRepository(ShopContext dbContext) : base(dbContext)
         {

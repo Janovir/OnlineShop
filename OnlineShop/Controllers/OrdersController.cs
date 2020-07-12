@@ -36,8 +36,7 @@ namespace OnlineShop.Controllers
                 return NotFound();
             }
 
-            var order = (await _orderService.GetAllAsync())
-                .FirstOrDefault(m => m.Id == id);
+            var order = (await _orderService.GetWithItemsAsync((Guid)id));
             if (order == null)
             {
                 return NotFound();
@@ -83,7 +82,7 @@ namespace OnlineShop.Controllers
                 return NotFound();
             }
 
-            var order = await _orderService.GetAsync((Guid)id);
+            var order = await _orderService.GetWithItemsAsync((Guid)id);
             if (order == null)
             {
                 return NotFound();
@@ -97,7 +96,7 @@ namespace OnlineShop.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("OrderId,Id,Name,UpdatedDate")] Order order)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,OrderStatus")] Order order)
         {
             if (id != order.Id)
             {

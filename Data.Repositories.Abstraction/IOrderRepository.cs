@@ -3,7 +3,7 @@ using Entities;
 
 namespace Data.Repositories.Abstraction
 {
-    public interface IOrderRepository: ICrudRepository<Order>
+    public interface IOrderRepository: IDbCrudRepository<Order>
     {
     }
 }

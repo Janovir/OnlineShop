@@ -13,6 +13,9 @@ namespace Data.EntityMapping
         {
             BaseMap(e);
 
+            e.HasIndex(t => t.Name).IsUnique();
+
+            e.Property(t => t.Name).HasMaxLength(50); 
             e.Property(t => t.OrderStatus).IsRequired().HasDefaultValue(OrderStatus.Placed);
         }
     }

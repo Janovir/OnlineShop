@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 
 namespace Data.Repositories.Abstraction.Base
 {
-    public interface ICrudRepository<TEntity> where TEntity : BaseEntity
+    public interface IDbCrudRepository<TEntity> where TEntity : BaseEntity
     {
+        Task<TEntity> CreateAsync(TEntity entity);
+        Task<TEntity> CreateThenSaveAsync(TEntity entity);
         Task<TEntity> GetAsync(Guid key);
         Task<List<TEntity>> GetAllAsync();
+        Task<TEntity> DeleteAsync(Guid id);
+        Task<TEntity> UpdateAsync(TEntity entity);
     }
 }
