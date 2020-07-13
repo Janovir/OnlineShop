@@ -4,6 +4,7 @@ using Entities.Abstraction;
 using Services.Abstraction.Crud.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Services.Crud.Base
@@ -17,6 +18,8 @@ namespace Services.Crud.Base
         public async Task<TEntity> CreateAsync(TEntity entity) => await _repository.CreateThenSaveAsync(entity);
 
         public async Task<IEnumerable<TEntity>> GetAllAsync() => await _repository.GetAllAsync();
+
+        public async Task<IEnumerable<TEntity>> GetAllWhereAsync(Expression<Func<TEntity, bool>> expression) => await _repository.GetAllWhereAsync(expression);
 
         public async Task<TEntity> GetAsync(Guid id) => await _repository.GetAsync(id);
 

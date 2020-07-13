@@ -60,13 +60,6 @@ namespace OnlineShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                //order.Id = Guid.NewGuid();
-                //_orderService.Add(order);
-                //await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
-
-
-                order.Id = Guid.NewGuid();
                 await _orderService.CreateAsync(order);
                 return RedirectToAction(nameof(Index));
             }

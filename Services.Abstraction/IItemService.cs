@@ -9,6 +9,5 @@ namespace Services.Abstraction
 {
     public interface IItemService : ICrudService<Item>
     {
-        Task<Item> GetItemWithOrderReferences(Guid id);
     }
 }

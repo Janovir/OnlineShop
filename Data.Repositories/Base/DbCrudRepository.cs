@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,6 +46,11 @@ namespace Data.Repositories.Base
             }
 
             return entity;
+        }
+
+        public virtual async Task<IEnumerable<TEntity>> GetAllWhereAsync(Expression<Func<TEntity, bool>> expression)
+        {
+            return await _dbContext.Set<TEntity>().Where(expression).ToListAsync();
         }
 
         public virtual async Task<List<TEntity>> GetAllAsync() => await _dbContext.Set<TEntity>().ToListAsync();

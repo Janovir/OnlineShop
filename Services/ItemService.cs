@@ -6,6 +6,7 @@ using Services.Crud.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,13 +18,6 @@ namespace Services
         public ItemService(IItemRepository itemRepository) : base(itemRepository)
         {
             _itemRepository = itemRepository;
-        }
-
-        //private readonly IOrderService _orderService;
-        public async Task<Item> GetItemWithOrderReferences(Guid id)
-        {
-            var item = await base.GetAsync(id);
-            return item;//TODO: Missing order references
         }
     }
 }
